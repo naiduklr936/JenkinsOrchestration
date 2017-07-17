@@ -1,0 +1,17 @@
+---
+#- name : Sync S3
+#  shell : aws s3 sync s3://"{{ bucket_name }}" "{{ pathtocopybucketfiles }}" --delete
+#  environment:
+#   AWS_ACCESS_KEY_ID : "{{ awsaccesskeyid }}"
+#   AWS_SECRET_ACCESS_KEY : "{{ awssecretaccesskey }}"
+#   AWS_DEFAULT_REGION : "{{ region }}"
+
+- name: Create target directory
+  file: path="{{ pathtocopybucketfiles }}" state=directory mode=0755
+
+- name: Sync S3 using link
+  get_url:
+    url: https://s3.amazonaws.com/{{ bucket_name }}/jobs/Test/{{ buildnumber }}/slider-test-0.0.1-SNAPSHOT.war
+    dest: "{{ pathtocopybucketfiles }}"
+    
+    
